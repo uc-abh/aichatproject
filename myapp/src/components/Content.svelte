@@ -1,6 +1,17 @@
-
+<script>
+    import { selectText } from "../function/select";
+    import Dropdown from "./Dropdown.svelte";
+    import { onMount } from "svelte";
+    onMount(()=>{
+        selectText();
+    });
+    let selected_content=true;
+    function handleclick(){
+        selected_content=false;
+    }
+</script>
 <div class="container"> <h1>Ucertify</h1>
-    <button id="unselected_content">Button for unselected content</button>
+    <button class="unselected_button" on:click={handleclick}>Button for unselected content</button>
     <br>
 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum saepe pariatur tempora, in, molestias aperiam alias laudantium, beatae exercitationem unde consequatur error harum mollitia earum reprehenderit laborum quos ducimus consectetur?
 Aspernatur deleniti voluptas natus blanditiis. Soluta illo consectetur corporis minus natus saepe necessitatibus! Et veritatis at maiores nostrum repellendus mollitia, tempore dolore suscipit officiis minus, illo corrupti nemo perspiciatis ducimus?
@@ -15,3 +26,4 @@ Officiis laboriosam placeat a earum natus magnam. Dolorem quae minus totam earum
 <br>
 Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo vero possimus dicta. Ea esse fugiat at voluptates qui delectus libero omnis in explicabo consectetur sint, expedita quos et aperiam itaque.
 </div>
+<Dropdown {selected_content}/>

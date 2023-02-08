@@ -1,9 +1,11 @@
 <script>
     import Selectedmodelbox from "./Selectedmodelbox.svelte";
     let menu_data;
+    export let selected_content;
+    console.log(selected_content)
     function closeDropdown(data){
         menu_data=data;
-        console.log(menu_data)
+        // console.log(menu_data)
         let dropdown1=document.querySelector(".dropdown1");
         dropdown1.style.display = "none";
         show=true;
@@ -34,7 +36,7 @@
         </div>
       </div>
 
-      <Selectedmodelbox bind:show={show} {menu_data} />
+      <Selectedmodelbox bind:show={show} {menu_data} {selected_content}/>
 
 <style>
 

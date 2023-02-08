@@ -3,7 +3,12 @@
 import Dropdown from "./Dropdown.svelte";
 export let menu_data;
     export let show = false;
-
+export let selected_content;
+import { selectText } from "../function/select";
+    import { onMount } from "svelte";
+    onMount(()=>{
+        selectText();
+    });
 </script>
 <main>
     {#if show}
@@ -15,8 +20,9 @@ export let menu_data;
                     <i class="bi bi-filetype-ai text-secondary"></i>
                     <span class="text-secondary mx-2">{menu_data}</span>
                 </div>
-                <div class="border border-1 rounded p-2 form-control text-dark" contenteditable="true">
-                <!-- {#if selected_content} -->
+                {#if selected_content}
+                <div class="border border-1 rounded p-2 form-control text-dark mh-100" contenteditable="true" >
+               
                     <ul>
                     <li>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ad aut eius sunt ipsa deleniti officia sed. Harum, itaque natus vitae consequuntur molestiae totam. Consequuntur explicabo quos odit libero magni voluptatem?</li>
                     <li>Nam magnam voluptatem reiciendis excepturi ipsam consequatur nihil! Ipsa minima sequi blanditiis harum sit, repudiandae repellendus expedita repellat, architecto cupiditate asperiores quas corrupti quis molestias ea tempore assumenda, deleniti adipisci.</li>
@@ -24,8 +30,11 @@ export let menu_data;
                 
                     
                     </ul>
-                    <!-- {/if} -->
                 </div>
+                {:else}
+                <textarea name="" id="" cols="30" rows="7" style="width:100%" class="border border-1 rounded p-2 form-control text-dark"></textarea>
+                {/if}
+                
             </div>
             <div class="card-body pb-0">
                 <!-- svelte-ignore a11y-invalid-attribute -->

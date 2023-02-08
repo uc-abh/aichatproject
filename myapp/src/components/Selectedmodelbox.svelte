@@ -1,21 +1,22 @@
 
 <script> 
 import Dropdown from "./Dropdown.svelte";
+export let menu_data;
     export let show = false;
 
 </script>
 <main>
     {#if show}
     <div class="position-fixed top-50 start-50 d-flex justify-content-center align-items-center w-100 h-100"
-    style="transform: translate(-50%, -50%);background-color: rgba(0, 0, 0, 0.3);" id="selected_modalbox d-flex ">
+    style="transform: translate(-50%, -50%); background-color: rgba(0, 0, 0, 0.3);" id="selected_modalbox d-flex ">
         <div class="card w-75 mx-auto mt-5 shadow p-3 mb-5 bg-white rounded">
             <div class="container">
                 <div class="m-2">
                     <i class="bi bi-filetype-ai text-secondary"></i>
-                    <span class="text-secondary mx-2">Blog Post</span>
+                    <span class="text-secondary mx-2">{menu_data}</span>
                 </div>
                 <div class="border border-1 rounded p-2 form-control text-dark" contenteditable="true">
-                
+                <!-- {#if selected_content} -->
                     <ul>
                     <li>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ad aut eius sunt ipsa deleniti officia sed. Harum, itaque natus vitae consequuntur molestiae totam. Consequuntur explicabo quos odit libero magni voluptatem?</li>
                     <li>Nam magnam voluptatem reiciendis excepturi ipsam consequatur nihil! Ipsa minima sequi blanditiis harum sit, repudiandae repellendus expedita repellat, architecto cupiditate asperiores quas corrupti quis molestias ea tempore assumenda, deleniti adipisci.</li>
@@ -23,6 +24,7 @@ import Dropdown from "./Dropdown.svelte";
                 
                     
                     </ul>
+                    <!-- {/if} -->
                 </div>
             </div>
             <div class="card-body pb-0">

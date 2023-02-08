@@ -1,8 +1,12 @@
 <script>
     import Selectedmodelbox from "./Selectedmodelbox.svelte";
-    function closeDropdown(){
+    let menu_data;
+    function closeDropdown(data){
+        menu_data=data;
+        console.log(menu_data)
         let dropdown1=document.querySelector(".dropdown1");
         dropdown1.style.display = "none";
+        show=true;
     }
     let show = false;
     
@@ -12,26 +16,25 @@
             <div class="menu"> 
           <a href="#">Summarize</a>
           <div class="sub_menu">
-            <a href="#" id="bullet_point" on:click={() => (show=true)} on:click={closeDropdown}>Bullet point</a>
-            <a href="#">key points</a>
-            <a href="#">for ppt
+            <a href="#" id="bullet_point" on:click={()=>closeDropdown('bullet_point')} >Bullet point</a>
+            <a href="#" on:click={()=>closeDropdown('key_points')}>key points</a>
+            <a href="#"on:click={()=>closeDropdown('PPT')} >for ppt
             </a>
-            <a href="#">less verbose</a>
+            <a href="#" on:click={()=>closeDropdown('Less_verbose')}>less verbose</a>
           </div>
         </div>
-          <a href="#">blog post</a>
-          <a href="#">pros and cons list</a>
-          <a href="#">outline</a>
-          <a href="#">improve writing</a>
-          <a href="#">explain this</a>
-          <a href="#">make longer</a>
-          <a href="#">make sorter</a>
-          <a href="#">outline</a>
+          <a href="#" on:click={()=>closeDropdown('Blog_post')}>blog post</a>
+          <a href="#" on:click={()=>closeDropdown('Pros_and_cons')}>pros and cons list</a>
+          <a href="#" on:click={()=>closeDropdown('Outline')}>outline</a>
+          <a href="#" on:click={()=>closeDropdown('Improve_writing')}>improve writing</a>
+          <a href="#" on:click={()=>closeDropdown('Explaination')}>explain this</a>
+          <a href="#" on:click={()=>closeDropdown('Detailing')}>make longer</a>
+          <a href="#" on:click={()=>closeDropdown('Summary')}>make sorter</a>
           
         </div>
       </div>
 
-      <Selectedmodelbox bind:show={show} />
+      <Selectedmodelbox bind:show={show} {menu_data} />
 
 <style>
 

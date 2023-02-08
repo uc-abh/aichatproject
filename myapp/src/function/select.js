@@ -11,6 +11,7 @@ export function selectText() {
             dropdown.style.display = "block";
             dropdown.style.top = position.y + position.height + "px";
             dropdown.style.left = position.x + "px";
+
         }
     });
 }

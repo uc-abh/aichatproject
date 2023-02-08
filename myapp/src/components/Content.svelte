@@ -1,5 +1,7 @@
 
 <div class="container"> <h1>Ucertify</h1>
+    <button id="unselected_content">Button for unselected content</button>
+    <br>
 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum saepe pariatur tempora, in, molestias aperiam alias laudantium, beatae exercitationem unde consequatur error harum mollitia earum reprehenderit laborum quos ducimus consectetur?
 Aspernatur deleniti voluptas natus blanditiis. Soluta illo consectetur corporis minus natus saepe necessitatibus! Et veritatis at maiores nostrum repellendus mollitia, tempore dolore suscipit officiis minus, illo corrupti nemo perspiciatis ducimus?
 Quidem distinctio beatae porro, tempora nostrum earum quibusdam exercitationem molestias facere. Nulla dignissimos amet fugiat. Accusantium sequi numquam, dolor odit quia laboriosam sunt suscipit, in esse, deserunt et eum? Odit?

@@ -47,7 +47,9 @@
     const showOutput = async () => {
         if(inputData===""){
             requirederror="Input is required";
-           document.getElementById("textarea_content").style.borderColor= "red";
+           document.getElementById("textarea_content");
+           textarea_content.focus();
+
           return false;
         }
        borderColor
@@ -66,9 +68,6 @@
         showingOutputModal = false;
         
     }
-    // onMount(()=>{
-    //     copyToClipboard();
-    // })
 
    
     </script>

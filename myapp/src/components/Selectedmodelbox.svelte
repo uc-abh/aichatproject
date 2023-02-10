@@ -52,7 +52,7 @@
 
           return false;
         }
-       borderColor
+    
         showingOutputModal = true;
         loadingData = true;
         updateChat(inputData, 1);

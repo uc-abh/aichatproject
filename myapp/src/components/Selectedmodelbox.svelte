@@ -46,11 +46,13 @@
     
     const showOutput = async () => {
         if(inputData===""){
-            requirederror="Input is required";
+            requirederror="Input is required !";
            document.getElementById("textarea_content");
            textarea_content.focus();
-
           return false;
+        }
+        else{
+            requirederror="";
         }
     
         showingOutputModal = true;
@@ -68,7 +70,16 @@
         showingOutputModal = false;
         
     }
+    function changeIconToText(){
+        let icon =document.getElementById("copyBtn");
+        icon.innerHTML = "Copied!";
+        icon.style.fontSize = "12px";
+  setTimeout(function() {
+    icon.innerHTML = '<i class="bi bi-clipboard " ></i>';
+    icon.style.fontSize = "15px";
+  }, 1000);
 
+    }
    
     </script>
     <main>
@@ -83,9 +94,9 @@
                     <div class="overflow-auto" style="max-height: 300px;">
                         {#each chat as item}
                             <div class="d-flex {item.user?'justify-content-end': 'justify-content-start'}">
-                                <p class="historyChat text-secondary small border {item.user ? 'bg-white': 'bg-light'} p-1 rounded w-75 d-flex justify-content-between position-relative">
-                                    <span>{item.txt}</span> 
-                                    <button id="copyBtn" class="btn p-0 position-absolute copyBtnPosition" on:click={()=>copyToClipboard(item.txt)}>
+                                <p class="historyChat text-secondary small border  {item.user ? 'bg-white': 'bg-light'} p-1 rounded w-75 d-flex justify-content-between position-relative">
+                                    <span class=" mr-1">{item.txt}</span> 
+                                    <button id="copyBtn" class="btn p-0 position-absolute copyBtnPosition" on:click={changeIconToText} on:click={()=>copyToClipboard(item.txt)} >
                                     <i class="bi bi-clipboard " ></i>
                                     </button></p>
                                 
@@ -110,7 +121,7 @@
                         </div>
                     {:else}
                         <textarea name="" id="textarea_content" cols="30" rows="{chatMode? 3: 5}" placeholder="Enter input." style="width:100%" class="border border-1 rounded p-2 form-control text-dark" bind:value={inputData}></textarea>
-                        <span id="error" style="color:red">{requirederror}</span><br><br>
+                        <span id="error" style="color:red; font-size:13px;" >{requirederror}</span>
                     {/if}
                     <div class="pt-2">
                         {#if showingOutputModal}
@@ -198,6 +209,7 @@
         }
         }
         .copyBtnPosition{
+            /* display: none; */
             opacity: 0.5;
             right: 0; 
             top: 50%; 
@@ -205,6 +217,7 @@
             cursor: pointer;
         }
         .historyChat:hover .copyBtnPosition {
+            /* display: block; */
             opacity: 1;
         }
     </style>

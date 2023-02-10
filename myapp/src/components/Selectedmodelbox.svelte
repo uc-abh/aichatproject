@@ -13,6 +13,7 @@
     let inputData = '';
     let chat = [];
     let chatMode = false;
+    let requirederror="";
     const getOutputData = async str => {
         const query = chatMode? str: `${menu_data} ${str}`;
         console.log(query);
@@ -45,11 +46,11 @@
     
     const showOutput = async () => {
         if(inputData===""){
-           alert("Input is required");
-
-           return;
+            requirederror="Input is required";
+           document.getElementById("textarea_content").style.borderColor= "red";
+          return false;
         }
-       
+       borderColor
         showingOutputModal = true;
         loadingData = true;
         updateChat(inputData, 1);
@@ -109,8 +110,8 @@
                             {/if}
                         </div>
                     {:else}
-                        <textarea name="" id="" cols="30" rows="{chatMode? 3: 5}" placeholder="Enter input." style="width:100%" class="border border-1 rounded p-2 form-control text-dark" bind:value={inputData}></textarea>
-                        
+                        <textarea name="" id="textarea_content" cols="30" rows="{chatMode? 3: 5}" placeholder="Enter input." style="width:100%" class="border border-1 rounded p-2 form-control text-dark" bind:value={inputData}></textarea>
+                        <span id="error" style="color:red">{requirederror}</span><br><br>
                     {/if}
                     <div class="pt-2">
                         {#if showingOutputModal}

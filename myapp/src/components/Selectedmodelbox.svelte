@@ -2,7 +2,7 @@
 <script> 
     import { empty, onMount } from "svelte/internal";
     // import API from '../../src/api/api';
-    import { formatData, copyToClipboard } from './util';
+    import { formatData } from './util';
     
     export let menu_data;
     export let selected_content;
@@ -70,21 +70,30 @@
         showingOutputModal = false;
         
     }
-    function changeIconToText(){
-        let icon =document.getElementById("copyBtn");
-        icon.innerHTML = "Copied!";
-        icon.style.fontSize = "12px";
-  setTimeout(function() {
-    icon.innerHTML = '<i class="bi bi-clipboard " ></i>';
-    icon.style.fontSize = "15px";
-  }, 1000);
-
+    const copyToClipboard = text => {
+    var dummy = document.createElement("textarea");
+    document.body.appendChild(dummy);
+    dummy.value = text;
+    dummy.select();
+    document.execCommand("copy");
+    document.body.removeChild(dummy);
+}
+    function changeIconToText(text_data, event){
+        // console.log(event);
+        let new_node = event.target;
+        // console.log(new_node);
+        new_node.innerHTML = "Copied!";
+        setTimeout(function() {
+            new_node.innerHTML = "";
+        }, 2000);
+        copyToClipboard(text_data)
     }
    
     </script>
     <main>
         <div class="position-fixed top-50 start-50 d-flex justify-content-center align-items-center w-100 h-100"
         style="transform: translate(-50%, -50%); background-color: rgba(0, 0, 0, 0.3);" id="selected_modalbox d-flex ">
+            <!-- svelte-ignore a11y-click-events-have-key-events -->
             <div class="card w-75 mx-auto mt-5 shadow p-2 mb-5 bg-white rounded" on:click|stopPropagation>
                 <div class="container">
                     <div class="mb-2">
@@ -96,7 +105,7 @@
                             <div class="d-flex {item.user?'justify-content-end': 'justify-content-start'}">
                                 <p class="historyChat text-secondary small border  {item.user ? 'bg-white': 'bg-light'} p-1 rounded w-75 d-flex justify-content-between position-relative">
                                     <span class=" mr-1">{item.txt}</span> 
-                                    <button id="copyBtn" class="btn p-0 position-absolute copyBtnPosition" on:click={changeIconToText} on:click={()=>copyToClipboard(item.txt)} >
+                                    <button id="copyBtn" class="btn p-0 position-absolute copyBtnPosition" on:click={()=>changeIconToText(item.txt,event)}  >
                                     <i class="bi bi-clipboard " ></i>
                                     </button></p>
                                 

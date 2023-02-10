@@ -16,14 +16,3 @@ export const getTextSelected = () => {
 export const formatData = str => {
     return str.replace(/\r\n|\n/g, "<BR>");
 }
-export const copyToClipboard = text => {
-    var dummy = document.createElement("textarea");
-    document.body.appendChild(dummy);
-    dummy.value = text;
-    dummy.select();
-    document.execCommand("copy");
-    document.body.removeChild(dummy);
-
-
-
-}

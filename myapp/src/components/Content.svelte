@@ -1,7 +1,7 @@
 <script>
     import Dropdown from "./Dropdown.svelte";
 	import Selectedmodelbox from "./Selectedmodelbox.svelte";
-    import { getTextSelected, openAISupportDropdown } from "../function/select";
+    import { getTextSelected, openAISupportDropdown } from "./util";
 	import { onDestroy, onMount } from "svelte/internal";
     
     

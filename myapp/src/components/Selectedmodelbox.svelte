@@ -2,7 +2,7 @@
 <script> 
     import { empty, onMount } from "svelte/internal";
     // import API from '../../src/api/api';
-    import { formatData } from './util';
+    import { formatData, handleMouseDown } from './util';
     
     export let menu_data;
     export let selected_content;
@@ -14,6 +14,8 @@
     let chat = [];
     let chatMode = false;
     let requirederror="";
+    let isExpanded = false;
+    
     const getOutputData = async str => {
         const query = chatMode? str: `${menu_data} ${str}`;
         console.log(query);
@@ -35,6 +37,7 @@
             outputData = await getOutputData(selected_content);
             updateChat(selected_content, 1);
             loadingData = false;
+            
         } else {
             showingOutputModal = false;
         }
@@ -79,31 +82,40 @@
     document.body.removeChild(dummy);
 }
     function changeIconToText(text_data, event){
-        // console.log(event);
         let new_node = event.target;
-        // console.log(new_node);
-        new_node.innerHTML = "Copied!";
+        new_node.innerHTML = "copied";
         setTimeout(function() {
             new_node.innerHTML = "";
         }, 2000);
         copyToClipboard(text_data)
     }
+      function toggleSize() {
+    isExpanded = !isExpanded;
+  }
+    
    
     </script>
     <main>
-        <div class="position-fixed top-50 start-50 d-flex justify-content-center align-items-center w-100 h-100"
-        style="transform: translate(-50%, -50%); background-color: rgba(0, 0, 0, 0.3);" id="selected_modalbox d-flex ">
+        <div class="position-absolute  d-flex justify-content-center align-items-center modelbox" 
+        id="selected_modalbox d-flex " >
             <!-- svelte-ignore a11y-click-events-have-key-events -->
-            <div class="card w-75 mx-auto mt-5 shadow p-2 mb-5 bg-white rounded" on:click|stopPropagation>
-                <div class="container">
-                    <div class="mb-2">
-                        <i class="bi bi-filetype-ai text-secondary"></i>
-                        <span class="text-secondary">{menu_data}</span>
-                    </div>
-                    <div class="overflow-auto" style="max-height: 300px;">
+            <div  on:click|stopPropagation>
+            <div class="card mx-auto  shadow  bg-white rounded" style="{` width: ${isExpanded ? '100vw' : '500px'}`}" on:click|stopPropagation>
+                <div class="mb-4 bg-primary rounded-top d-flex align-items-center justify-content-between header" on:mousedown={handleMouseDown}  style="height:35px; Cursor:pointer">
+                    <div class="d-flex">
+                    <i class="bi bi-filetype-ai text-white ml-2 "></i>
+                    <span class="text-white ml-1">AI Support</span>
+                </div>
+                <div class="d-flex align-items-center">
+                    <i class="bi bi-fullscreen text-white mr-2 cursor:pointer" id="full-screen-button" on:click={toggleSize}></i>
+                    <i class="bi bi-x text-white " style="font-size: 30px; cursor:pointer" on:click={()=>(show=false)}></i>
+                </div>
+                </div>
+                <div class="container content">
+                    <div class="overflow-auto" style="{`max-height: ${isExpanded ? '350px' : '200px'}`}">
                         {#each chat as item}
-                            <div class="d-flex {item.user?'justify-content-end': 'justify-content-start'}">
-                                <p class="historyChat text-secondary small border  {item.user ? 'bg-white': 'bg-light'} p-1 rounded w-75 d-flex justify-content-between position-relative">
+                            <div class="d-flex {item.user?'justify-content-end': 'justify-content-start'}" style="{`font-size: ${isExpanded ? '20px' : ''}`}">
+                                <p class="historyChat text-dark small border  {item.user ? 'bg-white': 'bg-light'} p-1 rounded w-75 d-flex justify-content-between position-relative">
                                     <span class=" mr-1">{item.txt}</span> 
                                     <button id="copyBtn" class="btn p-0 position-absolute copyBtnPosition" on:click={()=>changeIconToText(item.txt,event)}  >
                                     <i class="bi bi-clipboard " ></i>
@@ -113,7 +125,7 @@
                         {/each}
                     </div>
                     {#if showingOutputModal}
-                        <div class="p-2 border border-1 rounded position-relative overflow-auto" style="min-height: 100px; max-height: 150px; font-size: 12px;">
+                        <div class="p-2 border border-1 rounded position-relative overflow-auto" style="min-height: 130px; max-height: 150px; font-size: 12px;">
                             {#if loadingData}
                                 <div class="spinner-wrapper">
                                     <div id="center" style="position:absolute;top:46%;left:47%;z-index:60000;">
@@ -125,25 +137,27 @@
                                     </div>
                                 </div>
                             {:else}
+                            <div style="font-size:14px">
                                 {@html formatData(outputData)}
+                            </div>
                             {/if}
                         </div>
                     {:else}
                         <textarea name="" id="textarea_content" cols="30" rows="{chatMode? 3: 5}" placeholder="Enter input." style="width:100%" class="border border-1 rounded p-2 form-control text-dark" bind:value={inputData}></textarea>
                         <span id="error" style="color:red; font-size:13px;" >{requirederror}</span>
                     {/if}
-                    <div class="pt-2">
+                    <div class="pt-2 pb-2">
                         {#if showingOutputModal}
                             <!-- svelte-ignore a11y-invalid-attribute -->
-                            <button class="btn btn-primary btn-sm border border-1">Keep <i class="icomoon-enter-4"></i></button>
+                            <button class="btn btn-primary btn-sm border border-1 my-1">Keep <i class="icomoon-enter-4"></i></button>
                             <!-- svelte-ignore a11y-invalid-attribute -->
-                            <button class="btn btn-light btn-sm border border-1 ms-1" on:click={() => showingOutputModal = false}>Try again<i class="icomoon-new-24px-retry-1"></i></button>
+                            <button class="btn btn-light btn-sm border border-1 ms-1 my-1" on:click={() => showingOutputModal = false}>Try again<i class="icomoon-new-24px-retry-1"></i></button>
                             <!-- svelte-ignore a11y-invalid-attribute -->
-                            <button class="btn btn-light btn-sm border border-1 ms-1" on:click={()=>(show=false)}>Discard <i class="icomoon-new-24px-exhibit-1"></i></button>
-                            <button class="btn btn-secondary btn-sm ms-1" on:click={addOutputData}>Prompt</button>
+                            <button class="btn btn-light btn-sm border border-1 ms-1 my-1" on:click={()=>(show=false)}>Discard <i class="icomoon-new-24px-exhibit-1"></i></button>
+                            <button class="btn btn-secondary btn-sm ms-1 my-1" on:click={addOutputData}>Prompt</button>
                         {:else}
-                            <button class="btn btn-primary btn-sm border border-1" on:click={showOutput}>Generate</button>
-                            <button class="btn btn-light btn-sm border border-1 mx-1" on:click={()=>(show=false)}>Close</button>
+                            <button class="btn btn-primary btn-sm border border-1 my-1" on:click={showOutput}>Generate</button>
+                            <button class="btn btn-light btn-sm border border-1 mx-1 my-1" on:click={()=>(show=false)}>Close</button>
                         {/if}
                     </div>
                 </div>
@@ -229,6 +243,13 @@
             /* display: block; */
             opacity: 1;
         }
+
+    .full_screen {
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+    }
     </style>
     
     

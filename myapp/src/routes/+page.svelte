@@ -1,7 +1,7 @@
 <script>
     import Content from "../components/Content.svelte";
-    // import Dropdown from "../components/Dropdown.svelte";
-    // import Selectedmodelbox from "../components/Selectedmodelbox.svelte";
+    import Dropdown from "../components/Dropdown.svelte";
+    import Selectedmodelbox from "../components/Selectedmodelbox.svelte";
     let getAISupport;
 </script>
 <main>

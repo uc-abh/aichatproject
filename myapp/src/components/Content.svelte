@@ -1,7 +1,9 @@
 <script>
     import Dropdown from "./Dropdown.svelte";
 	import Selectedmodelbox from "./Selectedmodelbox.svelte";
-    import { getTextSelected, openAISupportDropdown } from "./util";
+    import { getTextSelected
+        , openAISupportDropdown 
+    } from "./util";
 	import { onDestroy, onMount } from "svelte/internal";
     
     
@@ -22,18 +24,18 @@
         showDropdown = false;
         showModal=true;
     }
-    const resetParams = () => {
-        menu_data = '';
-        showModal = false;
-        showDropdown = false;
-        selected_content = '';
-    }
-    onDestroy(() => resetParams());
-    onMount(() => {
-        document.body.addEventListener('click', () => {
-            resetParams();
-        });
-    });
+    // const resetParams = () => {
+    //     menu_data = '';
+    //     showModal = false;
+    //     showDropdown = false;
+    //     selected_content = '';
+    // }
+    // onDestroy(() => resetParams());
+    // onMount(() => {
+    //     document.body.addEventListener('click', () => {
+    //         resetParams();
+    //     });
+    // });
 
 </script>
 

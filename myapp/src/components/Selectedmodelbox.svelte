@@ -7,7 +7,7 @@
     export let menu_data;
     export let selected_content;
     export let show;
-    
+ 
     let showingOutputModal = false;
     let  outputData = '';
     let inputData = '';
@@ -16,6 +16,7 @@
     let requirederror="";
     let isExpanded = false;
     
+
     const getOutputData = async str => {
         const query = chatMode? str: `${menu_data} ${str}`;
         console.log(query);
@@ -23,19 +24,26 @@
         // let res = await API.getAPIDataJ('cat2.item_analysis_get', where);
         // res = res?.response;
         return "This is output data." || 'Something went wrong';
+        // return res?.result || 'Something went wrong';
     }
     let loadingData = false;
 
     const updateChat = (string, byUser) => {
         chat = [...chat, {txt: string, user: byUser}];
+        const chatBox = document.getElementById("chatBox");
+  chatBox.scrollTop = chatBox.scrollHeight;
+  
+      
     }
+
     onMount(async () => {
         if(selected_content) {
-            showingOutputModal = true;
+            showingOutputModal = false;
             loadingData = true;
             inputData = selected_content;
-            outputData = await getOutputData(selected_content);
-            updateChat(selected_content, 1);
+            // outputData = await getOutputData(selected_content);
+            outputData=selected_content;
+            // updateChat(selected_content, 1);
             loadingData = false;
             
         } else {
@@ -56,6 +64,7 @@
         }
         else{
             requirederror="";
+           
         }
     
         showingOutputModal = true;
@@ -64,6 +73,9 @@
         outputData = await getOutputData(inputData);
         inputData = '';
         loadingData = false;
+
+      
+      
     }
     
     const addOutputData = () => {
@@ -71,6 +83,7 @@
         outputData = '';
         inputData = '';
         showingOutputModal = false;
+       
         
     }
     const copyToClipboard = text => {
@@ -91,16 +104,21 @@
     }
       function toggleSize() {
     isExpanded = !isExpanded;
+    if(isExpanded)
+    document.body.style.overflow = 'hidden';
+    else
+    document.body.style.overflow = 'scroll';
   }
+  
     
+
    
     </script>
-    <main>
+    <main class="position-relative h-100 w-100">
         <div class="position-absolute  d-flex justify-content-center align-items-center modelbox" 
-        id="selected_modalbox d-flex " >
+        id="selected_modalbox d-flex " style="position:absolute; top:50px; {`left: ${isExpanded ? '0px' : '10px'}; width: ${isExpanded ? '100%' : '500px'}`}">
             <!-- svelte-ignore a11y-click-events-have-key-events -->
-            <div  on:click|stopPropagation>
-            <div class="card mx-auto  shadow  bg-white rounded" style="{` width: ${isExpanded ? '100vw' : '500px'}`}" on:click|stopPropagation>
+            <div class="card mx-auto  shadow  bg-white rounded" style="{` width: ${isExpanded ? '100%' : '500px'}`}" on:click|stopPropagation>
                 <div class="mb-4 bg-primary rounded-top d-flex align-items-center justify-content-between header" on:mousedown={handleMouseDown}  style="height:35px; Cursor:pointer">
                     <div class="d-flex">
                     <i class="bi bi-filetype-ai text-white ml-2 "></i>
@@ -112,12 +130,12 @@
                 </div>
                 </div>
                 <div class="container content">
-                    <div class="overflow-auto" style="{`max-height: ${isExpanded ? '350px' : '200px'}`}">
+                    <div class="overflow-auto" id="chatBox" style="{`max-height: ${isExpanded ? '350px' : '200px'}`}">
                         {#each chat as item}
                             <div class="d-flex {item.user?'justify-content-end': 'justify-content-start'}" style="{`font-size: ${isExpanded ? '20px' : ''}`}">
                                 <p class="historyChat text-dark small border  {item.user ? 'bg-white': 'bg-light'} p-1 rounded w-75 d-flex justify-content-between position-relative">
                                     <span class=" mr-1">{item.txt}</span> 
-                                    <button id="copyBtn" class="btn p-0 position-absolute copyBtnPosition" on:click={()=>changeIconToText(item.txt,event)}  >
+                                    <button id="copyBtn" class="btn p-0 position-absolute copyBtnPosition" on:click={(event)=>changeIconToText(item.txt,event)}  >
                                     <i class="bi bi-clipboard " ></i>
                                     </button></p>
                                 
@@ -125,7 +143,7 @@
                         {/each}
                     </div>
                     {#if showingOutputModal}
-                        <div class="p-2 border border-1 rounded position-relative overflow-auto" style="min-height: 130px; max-height: 150px; font-size: 12px;">
+                        <div class="p-2 border border-1 rounded position-relative overflow-auto form-control" style="min-height: 130px; max-height: 150px; font-size: 12px; {`font-size: ${isExpanded ? '20px' : ''}`}" contenteditable="true"> 
                             {#if loadingData}
                                 <div class="spinner-wrapper">
                                     <div id="center" style="position:absolute;top:46%;left:47%;z-index:60000;">
@@ -137,22 +155,23 @@
                                     </div>
                                 </div>
                             {:else}
-                            <div style="font-size:14px">
+                            <div style="font-size:14px"  >
                                 {@html formatData(outputData)}
+                                <!-- {inputData} -->
                             </div>
                             {/if}
                         </div>
                     {:else}
-                        <textarea name="" id="textarea_content" cols="30" rows="{chatMode? 3: 5}" placeholder="Enter input." style="width:100%" class="border border-1 rounded p-2 form-control text-dark" bind:value={inputData}></textarea>
+                        <textarea name="" id="textarea_content" cols="30" rows="{chatMode? 3: 5}" placeholder="Enter input." style="width:100%" class="border border-1 rounded p-2 form-control text-dark mr-2" bind:value={inputData}></textarea>
                         <span id="error" style="color:red; font-size:13px;" >{requirederror}</span>
                     {/if}
                     <div class="pt-2 pb-2">
                         {#if showingOutputModal}
-                            <!-- svelte-ignore a11y-invalid-attribute -->
+                            
                             <button class="btn btn-primary btn-sm border border-1 my-1">Keep <i class="icomoon-enter-4"></i></button>
-                            <!-- svelte-ignore a11y-invalid-attribute -->
+                           
                             <button class="btn btn-light btn-sm border border-1 ms-1 my-1" on:click={() => showingOutputModal = false}>Try again<i class="icomoon-new-24px-retry-1"></i></button>
-                            <!-- svelte-ignore a11y-invalid-attribute -->
+                           
                             <button class="btn btn-light btn-sm border border-1 ms-1 my-1" on:click={()=>(show=false)}>Discard <i class="icomoon-new-24px-exhibit-1"></i></button>
                             <button class="btn btn-secondary btn-sm ms-1 my-1" on:click={addOutputData}>Prompt</button>
                         {:else}
@@ -244,12 +263,10 @@
             opacity: 1;
         }
 
-    .full_screen {
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-    }
+        .maximize-modal{
+            background-color: red;
+        }
+    
     </style>
     
     
